@@ -163,38 +163,28 @@
     border: 1px solid #2e3a48;
   }
   
-  .action-buttons {
-    display: flex;
-    gap: 10px;
-    width: 300px;
-    margin: 15px auto;
-    justify-content: center;
-  }
-  
-  .action-btn {
+  .done-btn {
     background: linear-gradient(90deg, #ff3eb5, #3eb5ff);
     color: white;
     border: none;
-    border-radius: 30px;
-    padding: 15px 20px;
-    font-size: 16px;
+    border-radius: 50px;
+    padding: 18px 30px;
+    font-size: 24px;
+    margin: 20px auto;
+    width: 320px;
     font-weight: bold;
-    box-shadow: 0 0 20px #ff3eb5;
+    box-shadow: 0 0 30px #ff3eb5;
     cursor: pointer;
-    flex: 1;
-    border: 1px solid rgba(255,255,255,0.2);
-  }
-  
-  .action-btn.secondary {
-    background: #2a3642;
-    border: 2px solid #3eb5ff;
-    box-shadow: 0 0 15px #3eb5ff;
+    display: block;
+    border: 2px solid rgba(255,255,255,0.3);
+    text-transform: uppercase;
+    letter-spacing: 2px;
   }
   
   .status-text {
     margin-top: 20px;
     color: #8b99aa;
-    font-size: 12px;
+    font-size: 14px;
     padding: 10px;
   }
 </style>
@@ -224,13 +214,10 @@
 <div class="colors" id="colors"></div>
 <div class="fonts" id="fonts"></div>
 
-<div class="action-buttons">
-  <button class="action-btn" onclick="generate()">📥 СОХРАНИТЬ</button>
-  <button class="action-btn secondary" onclick="openInBrowser()">🌐 ОТКРЫТЬ</button>
-</div>
+<button class="done-btn" onclick="done()">✨ ГОТОВО ✨</button>
 
 <div class="status-text" id="status">
-  ⚡ Редактор готов
+  ⚡ Настрой аватарку и нажми ГОТОВО
 </div>
 
 <script>
@@ -513,8 +500,8 @@ function draw() {
   }
 }
 
-// СОХРАНИТЬ НА ТЕЛЕФОН (ИСПРАВЛЕНО)
-function generate() {
+// ОДНА КНОПКА: ГОТОВО - открывает в браузере
+function done() {
   if (!img) {
     alert('Сначала загрузи фото!');
     return;
@@ -523,27 +510,7 @@ function generate() {
   const canvas = document.getElementById('canvas');
   const imageData = canvas.toDataURL('image/png');
   
-  try {
-    const link = document.createElement('a');
-    link.download = 'privet_avatar.png';
-    link.href = imageData;
-    link.click();
-    document.getElementById('status').innerHTML = '✅ Фото сохранено';
-  } catch (e) {
-    openInBrowser();
-  }
-}
-
-// ОТКРЫТЬ В БРАУЗЕРЕ
-function openInBrowser() {
-  if (!img) {
-    alert('Сначала загрузи фото!');
-    return;
-  }
-  
-  const canvas = document.getElementById('canvas');
-  const imageData = canvas.toDataURL('image/png');
-  
+  // Открываем в новой вкладке
   const newWindow = window.open();
   newWindow.document.write(`
     <html>
@@ -558,24 +525,36 @@ function openInBrowser() {
             justify-content: center; 
             align-items: center; 
             min-height: 100vh;
+            font-family: Arial;
+          }
+          .container {
+            text-align: center;
           }
           img { 
             max-width: 100%; 
-            max-height: 100vh; 
+            max-height: 80vh; 
             border: 3px solid #ff3eb5;
             border-radius: 20px;
             box-shadow: 0 0 30px #ff3eb5;
           }
+          p {
+            color: #8b99aa;
+            margin-top: 20px;
+            font-size: 16px;
+          }
         </style>
       </head>
       <body>
-        <img src="${imageData}" alt="PRIVET Avatar">
+        <div class="container">
+          <img src="${imageData}" alt="PRIVET Avatar">
+          <p>👆 Нажми и держи на фото чтобы сохранить</p>
+        </div>
       </body>
     </html>
   `);
   newWindow.document.close();
   
-  document.getElementById('status').innerHTML = '✅ Фото открыто (нажми и держи чтобы сохранить)';
+  document.getElementById('status').innerHTML = '✅ Фото открыто!';
 }
 
 // Начальный рисунок
@@ -583,4 +562,4 @@ draw();
 </script>
 
 </body>
-  </html>
+   </html>
