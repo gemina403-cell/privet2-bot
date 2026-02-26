@@ -232,7 +232,7 @@
   <button class="mode-btn" id="modeImage" onclick="setMode('image')">🖼️ ФОТО</button>
 </div>
 
-<!-- НОВЫЕ КНОПКИ ДЛЯ PRIVET -->
+<!-- КНОПКИ ДЛЯ PRIVET -->
 <div class="privet-mode">
   <button class="privet-btn active" id="privetColor" onclick="setPrivetMode('color')">🌈 ЦВЕТНОЙ</button>
   <button class="privet-btn" id="privetWhite" onclick="setPrivetMode('white')">⚪ БЕЛЫЙ</button>
@@ -303,7 +303,7 @@ function setMode(mode) {
   }
 }
 
-// НОВАЯ ФУНКЦИЯ ДЛЯ ПЕРЕКЛЮЧЕНИЯ СТИЛЯ PRIVET
+// ПЕРЕКЛЮЧЕНИЕ СТИЛЯ PRIVET
 function setPrivetMode(mode) {
   privetStyle = mode;
   document.getElementById('privetColor').classList.toggle('active', mode === 'color');
@@ -524,16 +524,14 @@ function draw() {
     
     // PRIVET - зависит от режима
     ctx.font = `bold 160px '${font}'`;
+    ctx.shadowColor = color;
+    ctx.shadowBlur = 50;
     
     if (privetStyle === 'color') {
-      // ЦВЕТНОЙ режим: белый текст, цветное свечение
-      ctx.shadowColor = color;
-      ctx.shadowBlur = 50;
-      ctx.fillStyle = '#ffffff';
+      // 🌈 ЦВЕТНОЙ: слово цветное, свечение цветное
+      ctx.fillStyle = color;
     } else {
-      // БЕЛЫЙ режим: белый текст, белое свечение
-      ctx.shadowColor = '#ffffff';
-      ctx.shadowBlur = 50;
+      // ⚪ БЕЛЫЙ: слово белое, свечение цветное
       ctx.fillStyle = '#ffffff';
     }
     
@@ -543,7 +541,7 @@ function draw() {
   }
 }
 
-// ОДНА КНОПКА: ГОТОВО - открывает в браузере
+// ГОТОВО - открывает в браузере
 function done() {
   if (!img) {
     alert('Сначала загрузи фото!');
@@ -553,7 +551,6 @@ function done() {
   const canvas = document.getElementById('canvas');
   const imageData = canvas.toDataURL('image/png');
   
-  // Открываем в новой вкладке
   const newWindow = window.open();
   newWindow.document.write(`
     <html>
@@ -605,4 +602,4 @@ draw();
 </script>
 
 </body>
- </html>
+</html>
