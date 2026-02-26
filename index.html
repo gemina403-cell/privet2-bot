@@ -453,7 +453,7 @@ canvas.addEventListener('touchend', (e) => {
   }
 });
 
-// РИСОВАНИЕ
+// РИСОВАНИЕ (БЕЗ ЧЕРНОЙ ОБВОДКИ)
 function draw() {
   const canvas = document.getElementById('canvas');
   const ctx = canvas.getContext('2d');
@@ -473,27 +473,18 @@ function draw() {
     ctx.scale(textScale, textScale);
     ctx.textAlign = 'center';
     
-    // КОД
+    // КОД - белый, свечение = цвет PRIVET
     ctx.font = `bold 130px '${font}'`;
-    ctx.strokeStyle = '#000000';
-    ctx.lineWidth = 8;
-    ctx.strokeText('КОД', 0, -120);
-    ctx.shadowColor = '#ffffff';
-    ctx.shadowBlur = 30;
-    ctx.fillStyle = '#ffffff';
-    ctx.fillText('КОД', 0, -120);
-    
-    // PRIVET
-    ctx.font = `bold 160px '${font}'`;
-    ctx.strokeStyle = '#000000';
-    ctx.lineWidth = 8;
-    ctx.strokeText('PRIVET', 0, 50);
     ctx.shadowColor = color;
     ctx.shadowBlur = 40;
     ctx.fillStyle = '#ffffff';
-    ctx.fillText('PRIVET', 0, 50);
-    ctx.shadowBlur = 60;
-    ctx.globalAlpha = 0.5;
+    ctx.fillText('КОД', 0, -120);
+    
+    // PRIVET - белый, свечение = выбранный цвет
+    ctx.font = `bold 160px '${font}'`;
+    ctx.shadowColor = color;
+    ctx.shadowBlur = 50;
+    ctx.fillStyle = '#ffffff';
     ctx.fillText('PRIVET', 0, 50);
     
     ctx.restore();
@@ -562,4 +553,4 @@ draw();
 </script>
 
 </body>
-   </html>
+ </html>
