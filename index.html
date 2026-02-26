@@ -103,6 +103,33 @@
     box-shadow: 0 0 20px #ff3eb5;
   }
   
+  .privet-mode {
+    display: flex;
+    gap: 10px;
+    width: 300px;
+    margin: 15px auto;
+    justify-content: center;
+  }
+  
+  .privet-btn {
+    background: #1e2632;
+    border: 2px solid #3eb5ff;
+    border-radius: 30px;
+    padding: 12px 20px;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    flex: 1;
+    transition: all 0.3s;
+  }
+  
+  .privet-btn.active {
+    background: #3eb5ff;
+    border-color: #ff3eb5;
+    box-shadow: 0 0 20px #3eb5ff;
+  }
+  
   .colors {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -205,6 +232,12 @@
   <button class="mode-btn" id="modeImage" onclick="setMode('image')">🖼️ ФОТО</button>
 </div>
 
+<!-- НОВЫЕ КНОПКИ ДЛЯ PRIVET -->
+<div class="privet-mode">
+  <button class="privet-btn active" id="privetColor" onclick="setPrivetMode('color')">🌈 ЦВЕТНОЙ</button>
+  <button class="privet-btn" id="privetWhite" onclick="setPrivetMode('white')">⚪ БЕЛЫЙ</button>
+</div>
+
 <div class="info-text" id="infoText">
   🔵 РЕЖИМ ТЕКСТА:<br>
   🖱️ Мышь: тащить - двигать текст, колесико - размер текста<br>
@@ -224,6 +257,7 @@
 let img = null;
 let color = '#ff3eb5';
 let font = 'Oswald';
+let privetStyle = 'color'; // 'color' или 'white'
 let textX = 300;
 let textY = 400;
 let textScale = 1;
@@ -267,6 +301,14 @@ function setMode(mode) {
   } else {
     infoText.innerHTML = '🟢 РЕЖИМ ФОТО:<br>🖱️ Мышь: тащить - двигать фото, колесико - размер фото<br>🤚 Телефон: 1 палец - двигать, 2 пальца - размер фото';
   }
+}
+
+// НОВАЯ ФУНКЦИЯ ДЛЯ ПЕРЕКЛЮЧЕНИЯ СТИЛЯ PRIVET
+function setPrivetMode(mode) {
+  privetStyle = mode;
+  document.getElementById('privetColor').classList.toggle('active', mode === 'color');
+  document.getElementById('privetWhite').classList.toggle('active', mode === 'white');
+  draw();
 }
 
 // Кнопки цветов
@@ -453,7 +495,7 @@ canvas.addEventListener('touchend', (e) => {
   }
 });
 
-// РИСОВАНИЕ (БЕЗ ЧЕРНОЙ ОБВОДКИ)
+// РИСОВАНИЕ
 function draw() {
   const canvas = document.getElementById('canvas');
   const ctx = canvas.getContext('2d');
@@ -473,18 +515,28 @@ function draw() {
     ctx.scale(textScale, textScale);
     ctx.textAlign = 'center';
     
-    // КОД - белый, свечение = цвет PRIVET
+    // КОД - всегда белый с цветным свечением
     ctx.font = `bold 130px '${font}'`;
     ctx.shadowColor = color;
     ctx.shadowBlur = 40;
     ctx.fillStyle = '#ffffff';
     ctx.fillText('КОД', 0, -120);
     
-    // PRIVET - белый, свечение = выбранный цвет
+    // PRIVET - зависит от режима
     ctx.font = `bold 160px '${font}'`;
-    ctx.shadowColor = color;
-    ctx.shadowBlur = 50;
-    ctx.fillStyle = '#ffffff';
+    
+    if (privetStyle === 'color') {
+      // ЦВЕТНОЙ режим: белый текст, цветное свечение
+      ctx.shadowColor = color;
+      ctx.shadowBlur = 50;
+      ctx.fillStyle = '#ffffff';
+    } else {
+      // БЕЛЫЙ режим: белый текст, белое свечение
+      ctx.shadowColor = '#ffffff';
+      ctx.shadowBlur = 50;
+      ctx.fillStyle = '#ffffff';
+    }
+    
     ctx.fillText('PRIVET', 0, 50);
     
     ctx.restore();
